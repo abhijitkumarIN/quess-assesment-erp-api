@@ -11,18 +11,13 @@ class User(Base):
     otp_created_at = Column(DateTime , nullable=True)
     is_verified=Column(Boolean , default=False)
 
-    # subscription 
-    blog = relationship("BlogContent", back_populates="user" ,uselist=False)
-
-
     def __str__(self)->str:
-        return f"User(id={self.id} , email={self.email} "
+        return f"User(id={self.id} , email={self.email})"
     
     @property
     def safe_data(self)-> Dict[str, Any]:
         return {
             "id":self.id ,
             "email":self.email,
-            "username":self.username,
             "is_verified":self.is_verified
         }

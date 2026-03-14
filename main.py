@@ -4,29 +4,20 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.database import get_db , engine , Base
 # routes
+from employees.routes import router
 from auth.routes import router as auth_router 
 app = FastAPI(
-    title="Authentication API",
-    description="A simple authentication API with FastAPI",
+    title="Quesss ERP",
+    description="Quess ERP API with FastAPI",
     version="1.0.0"
 )
 
 Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def read_root():
-    return {
-        "message": "Welcome to Authentication API",
-        "status": "running",
-        "docs": "/docs",
-        "redoc": "/redoc"
-    }
-
-@app.get("/health")
-def health_check():
-    return {"status": "healthy"}
 
 app.include_router(auth_router)
+app.include_router(router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],

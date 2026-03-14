@@ -105,11 +105,12 @@ async def login(user_credential:UserLogin , db: Session = Depends(get_db)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credential"
         )
-    if not user.is_verified:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Email is not verified"
-        )
+    # email otp disbaled currenly as mail is not going as checked for now 
+    # if not user.is_verified:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_401_UNAUTHORIZED,
+    #         detail="Email is not verified"
+    #     )
     access_token = create_access_token(data={
         "sub":user.email
     })
