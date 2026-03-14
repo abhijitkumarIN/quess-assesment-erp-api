@@ -1,27 +1,13 @@
-# Core FastAPI and web framework
 fastapi==0.115.6
 uvicorn[standard]==0.34.0
 python-multipart==0.0.20
-
-# Database
 SQLAlchemy==2.0.37
 pydantic==2.12.5
 pydantic-settings==2.13.1
-
-# Authentication and security
 passlib[bcrypt]==1.7.4
 python-jose[cryptography]==3.3.0
 bcrypt==4.2.1
-
-# Email functionality
 fastapi-mail==1.4.2
 email-validator==2.2.0
-
-# Environment and configuration
 python-dotenv==1.0.1
-
-# Redis (if needed for caching)
-redis==5.0.1
-
-# HTTP client (if needed)
 httpx==0.28.1
