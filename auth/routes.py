@@ -84,7 +84,7 @@ async def verify_account(email:str , otp:str , db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=400 , detail="Invalid OTP"
         )
-    if datetime.utcnow>= user.otp_created_at + timedelta(minutes=15):
+    if datetime.utcnow() >= user.otp_created_at + timedelta(minutes=15):
         raise HTTPException(
             status_code=400 , detail="OTP expired"
         )
@@ -105,7 +105,7 @@ async def login(user_credential:UserLogin , db: Session = Depends(get_db)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credential"
         )
-    if  user.is_verified :
+    if not user.is_verified:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Email is not verified"
@@ -125,16 +125,22 @@ async def login(user_credential:UserLogin , db: Session = Depends(get_db)):
 async def forgot_password(email:str , db: Session=Depends(get_db)):
     user = db.query(User).filter(User.email == email).first()
     if not user :
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED ,
-            detail="Provided mail does exist"
+            detail="Provided mail does not exist"
         )
     access_token = create_access_token(data={"sub":email})
-    await send_email(
-        email=email,
-        subject="Forgot password link",
-        body=f"your grand access link valid for 2 hours {access_token}"
-    ) 
+    try:
+        send_email(
+            email=email,
+            subject="Forgot password link",
+            body=f"your grand access link valid for 2 hours {access_token}"
+        ) 
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to send email: {str(e)}"
+        ) 
     return "Grand access token has been shared with your account mail id it is valid for 2 hours"
 
 
