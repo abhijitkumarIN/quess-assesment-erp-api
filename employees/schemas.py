@@ -84,7 +84,11 @@ class EmployeeWithAttendance(EmployeeResponse):
 
     class Config:
         from_attributes = True
-
+        
+class EmployeeInsight(BaseModel):
+    total_employees: int | str
+    present_employees: int | str
+    absent_employees: int | str
 
 class CheckInRequest(BaseModel):
     notes: Optional[str] = None

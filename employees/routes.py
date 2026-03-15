@@ -6,7 +6,7 @@ from employees.models import Employees, Attendance
 from employees.schemas import (
     EmployeeCreate, EmployeeUpdate, EmployeeResponse, EmployeeWithAttendance,
     AttendanceCreate, AttendanceUpdate, AttendanceResponse,
-    CheckInRequest, CheckOutRequest, MarkAbsentRequest
+    CheckInRequest, CheckOutRequest, MarkAbsentRequest , EmployeeInsight
 )
 from datetime import datetime, date
 from typing import Optional, List
@@ -85,6 +85,24 @@ def get_employee(employee_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Employee not found")
     return employee
 
+@router.get("/employee_insights", response_model=EmployeeInsight)
+def get_employee_insights(db: Session = Depends(get_db)):
+    today = date.today()
+
+    total_employees = db.query(Employees).count()
+
+    present_employees = db.query(Attendance).filter(
+        Attendance.date == today,
+        Attendance.is_present == True
+    ).count()
+
+    absent_employees = total_employees - present_employees
+
+    return {
+        "total_employees": total_employees,
+        "present_employees": present_employees,
+        "absent_employees": absent_employees
+    }
 
 @router.put("/{employee_id}", response_model=EmployeeResponse)
 def update_employee(employee_id: int, employee_update: EmployeeUpdate, db: Session = Depends(get_db)):
