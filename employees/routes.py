@@ -78,13 +78,6 @@ def get_employees(
     return employees
 
 
-@router.get("/{employee_id}", response_model=EmployeeWithAttendance)
-def get_employee(employee_id: int, db: Session = Depends(get_db)):
-    employee = db.query(Employees).filter(Employees.id == employee_id).first()
-    if not employee:
-        raise HTTPException(status_code=404, detail="Employee not found")
-    return employee
-
 @router.get("/employee_insights", response_model=EmployeeInsight)
 def get_employee_insights(db: Session = Depends(get_db)):
     today = date.today()
@@ -103,6 +96,13 @@ def get_employee_insights(db: Session = Depends(get_db)):
         "present_employees": present_employees,
         "absent_employees": absent_employees
     }
+
+@router.get("/{employee_id}", response_model=EmployeeWithAttendance)
+def get_employee(employee_id: int, db: Session = Depends(get_db)):
+    employee = db.query(Employees).filter(Employees.id == employee_id).first()
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    return employee
 
 @router.put("/{employee_id}", response_model=EmployeeResponse)
 def update_employee(employee_id: int, employee_update: EmployeeUpdate, db: Session = Depends(get_db)):
