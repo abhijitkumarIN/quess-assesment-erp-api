@@ -11,7 +11,7 @@ FastAPI-based ERP API for Quess assessment.
 
 ## Setup
 Git repo : https://github.com/abhijitkumarIN/quess-assesment-erp-api
-
+Live instance url : http://quess.newsarmour.com/docs
 1. **Create virtual environment**
 ```bash
 python -m venv venv
