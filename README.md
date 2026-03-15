@@ -10,6 +10,7 @@ FastAPI-based ERP API for Quess assessment.
 - pip
 
 ## Setup
+Git repo : https://github.com/abhijitkumarIN/quess-assesment-erp-api
 
 1. **Create virtual environment**
 ```bash
