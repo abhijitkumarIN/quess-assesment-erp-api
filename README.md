@@ -2,8 +2,6 @@
 
 FastAPI-based ERP API for Quess assessment.
 
-> **Note:** The backend is hosted on a free server using Render, so the API response may be slower than usual, especially during the request and yet all apis is public 
-
 ## Prerequisites
 
 - Python 3.8+
